@@ -6,6 +6,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Builder
@@ -30,4 +31,6 @@ public class UserEntity {
     private LocalDateTime lastLogin;
     private String token;
     private boolean active;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    private List<PhoneEntity> phones;
 }

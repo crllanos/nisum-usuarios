@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -20,4 +21,5 @@ public class UserResponseDTO {
     private LocalDateTime lastLogin;
     private String token;
     private boolean active;
+    private List<PhoneDTO> phones;
 }

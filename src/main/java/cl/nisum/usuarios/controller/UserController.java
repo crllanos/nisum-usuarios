@@ -1,8 +1,10 @@
 package cl.nisum.usuarios.controller;
 
 import cl.nisum.usuarios.Util;
+import cl.nisum.usuarios.dto.PhoneDTO;
 import cl.nisum.usuarios.dto.UserRequestDTO;
 import cl.nisum.usuarios.dto.UserResponseDTO;
+import cl.nisum.usuarios.entity.PhoneEntity;
 import cl.nisum.usuarios.entity.UserEntity;
 import cl.nisum.usuarios.service.IUserService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Slf4j
 @RestController
@@ -58,6 +62,14 @@ public class UserController {
                 .lastLogin(entity.getLastLogin())
                 .token(entity.getToken())
                 .active(entity.isActive())
+                .phones( entity.getPhones().stream()
+                        .map( p -> {
+                            return PhoneDTO.builder()
+                                    .number(p.getNumber())
+                                    .contrycode(p.getContrycode())
+                                    .citycode(p.getCitycode())
+                                    .build();
+                        } ).collect(Collectors.toList()))
                 .build();
     }
 
@@ -70,5 +82,13 @@ public class UserController {
                 .name(userRequest.getName())
                 .email(userRequest.getEmail())
                 .password(userRequest.getPassword())
+                .phones( userRequest.getPhones().stream()
+                        .map(p -> {
+                            return PhoneEntity.builder()
+                                    .number(p.getNumber())
+                                    .contrycode(p.getContrycode())
+                                    .citycode(p.getCitycode())
+                                    .build();
+                        }).collect(Collectors.toList()))
                 .build() ;
     }}
