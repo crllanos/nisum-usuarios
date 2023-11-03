@@ -47,7 +47,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserResponseDTO getUserById(@PathVariable UUID id){
+    public UserResponseDTO getUserById(@PathVariable String id){
         log.info(String.format("GET /user-registry/%s", id));
         UserEntity found = iUserService.findById(id);
         log.info(String.format("response: %s", util.obj2Json(found)));
@@ -55,7 +55,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public UserResponseDTO updateUser(@PathVariable UUID id, @RequestBody UserRequestDTO userRequest){
+    public UserResponseDTO updateUser(@PathVariable String id, @RequestBody UserRequestDTO userRequest){
         log.info(String.format("PUT /user-registry/%s", id));
         log.info(String.format("Updating user: %s", util.obj2Json(userRequest)));
         UserEntity updated = iUserService.update(id, userRequest2Entity(userRequest));
@@ -64,7 +64,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public UserResponseDTO deleteUser(@PathVariable UUID id){
+    public UserResponseDTO deleteUser(@PathVariable String id){
         log.info(String.format("DELETE /user-registry/%s", id));
         UserEntity deleted = iUserService.delete(id);
         log.info(String.format("response: %s", util.obj2Json(deleted)));

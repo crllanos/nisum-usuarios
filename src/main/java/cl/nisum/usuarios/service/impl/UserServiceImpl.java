@@ -30,7 +30,6 @@ public class UserServiceImpl implements IUserService {
 
     private final Util util;
 
-    // TODO Pasar a properties.yml
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
@@ -65,14 +64,14 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserEntity findById(UUID id) {
+    public UserEntity findById(String id) {
         log.info(String.format("UserService.findById() : %s", id));
-        return userRepository.findById(id)
+        return userRepository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new EntityNotFoundException(String.format("User %s not found", id)));
     }
 
     @Override
-    public UserEntity update(UUID id, UserEntity old) {
+    public UserEntity update(String id, UserEntity old) {
         log.info(String.format("UserService.update() : %s, %s ", id, util.obj2Json(old)));
 
         isValidUser(old, false);
@@ -89,7 +88,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserEntity delete(UUID id) {
+    public UserEntity delete(String id) {
         log.info(String.format("UserService.delete() : %s", id));
         UserEntity del = this.findById(id);
         userRepository.delete(del);

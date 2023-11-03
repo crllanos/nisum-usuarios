@@ -7,8 +7,6 @@ import org.springframework.context.annotation.Configuration;
 @Data
 @Configuration
 public class CredentialsConfig {
-
     @Value("${nissum.credentials.secret}")
     private String secret;
-
 }

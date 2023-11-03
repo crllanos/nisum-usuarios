@@ -42,11 +42,11 @@ public class UsuariosApplication {
 			roleService.saveRole(RoleEntity.builder().rolename(roleAdmin).build());
 			roleService.saveRole(RoleEntity.builder().rolename(roleSuperAdmin).build());
 
-			adminService.saveAdmin(AdminEntity.builder().username("bwayne").password("batman").build());
-			adminService.saveAdmin(AdminEntity.builder().username("ckent").password("superman").build());
+			adminService.saveAdmin(AdminEntity.builder().username("coltrane").password("supreme").build());
+			adminService.saveAdmin(AdminEntity.builder().username("evans").password("undercurrent").build());
 
-			adminService.addRoleToAdmin("bwayne", roleAdmin);
-			adminService.addRoleToAdmin("ckent", roleSuperAdmin);
+			adminService.addRoleToAdmin("coltrane", roleSuperAdmin);
+			adminService.addRoleToAdmin("evans", roleAdmin);
 		};
 	}
 
