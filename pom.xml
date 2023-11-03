@@ -16,16 +16,17 @@
 	<properties>
 		<java.version>11</java.version>
 		<feign-gson-version>10.11</feign-gson-version>
+		<jwt-auth0-version>4.2.1</jwt-auth0-version>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		<!--dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency-->
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -45,6 +46,11 @@
 			<groupId>io.github.openfeign</groupId>
 			<artifactId>feign-gson</artifactId>
 			<version>${feign-gson-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>${jwt-auth0-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
