@@ -1,4 +1,5 @@
 package cl.nisum.usuarios.filter;
+import cl.nisum.usuarios.config.CredentialsConfig;
 import lombok.RequiredArgsConstructor;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -6,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,29 +31,26 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
-@Configuration
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private String secret;
-    private AuthenticationManager authenticationManager;
-
-    public AuthenticationFilter(AuthenticationManager authenticationManagerBean) {
-        this.authenticationManager = authenticationManagerBean;
-    }
-
     public void setSecret(String secret){
         this.secret = secret;
+    }
+
+    public AuthenticationFilter(AuthenticationManager authenticationManager) {
+        super.setAuthenticationManager(authenticationManager);
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
         log.info("Pasa por AuthenticationFilter");
-        log.info("secret:", secret);
+        //log.info("secret:", secret);
         UsernamePasswordAuthenticationToken authToken =
                 new UsernamePasswordAuthenticationToken(request.getParameter("username"),
                         request.getParameter("password"));
-        return this.authenticationManager.authenticate(authToken);
+        return getAuthenticationManager().authenticate(authToken);
     }
 
     @Override
@@ -59,6 +58,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                                             FilterChain chain, Authentication authResult)
             throws IOException, ServletException {
         User user = (User) authResult.getPrincipal();
+        //String secret = credentialsConfig.getSecret();
         log.info("secret: ", secret);
         Algorithm alg  = Algorithm.HMAC256(secret.getBytes());
         String accessToken = JWT.create()

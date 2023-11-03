@@ -33,9 +33,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     //@Autowired
     //private AuthenticationFilter filter;
+    //private AuthenticationFilter filter;
 
-    @Value("${nissum.credentials.secret}")
-    private static String secret;
+    //@Value("${nissum.credentials.secret}")
+    //private static String secret;
+
+    @Autowired
+    private CredentialsConfig credentialsConfig;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -46,10 +50,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         log.info("pasa por SecurityConfig");
+        String secret = credentialsConfig.getSecret();
         log.info("secret:", secret);
-        AuthenticationFilter filter = new AuthenticationFilter(authenticationManagerBean());
+        AuthenticationFilter filter = new AuthenticationFilter(super.authenticationManager());
         filter.setSecret(secret);
-        //filter.authenticationManagerBean( super.authenticationManagerBean() );
+        //filter.setAuthenticationManager( authenticationManagerBean() );
         filter.setFilterProcessesUrl("/user-registry/login/**");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -79,7 +84,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
+        //return super.authenticationManagerBean();
+        return super.authenticationManager();
     }
 
 }

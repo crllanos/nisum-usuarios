@@ -1,10 +1,12 @@
 package cl.nisum.usuarios.filter;
+import cl.nisum.usuarios.config.CredentialsConfig;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -31,13 +33,17 @@ import java.util.Map;
 public class AuthorizationFilter extends OncePerRequestFilter {
     private final static String bearer = "Bearer ";
 
-    @Value("${nissum.credentials.secret}")
-    private static String secret;// = "nissum.credentials";
+    //@Value("${nissum.credentials.secret}")
+    //private static String secret;// = "nissum.credentials";
+
+    @Autowired
+    private CredentialsConfig credentialsConfig;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         log.info("Pasa por AuthorizationFilter = secret");
+        String secret = credentialsConfig.getSecret();
         log.info("secret: {}", secret);
         if (request.getServletPath().equals("/login")){
             filterChain.doFilter(request, response);
