@@ -33,18 +33,14 @@ import java.util.Map;
 public class AuthorizationFilter extends OncePerRequestFilter {
     private final static String bearer = "Bearer ";
 
-    //@Value("${nissum.credentials.secret}")
-    //private static String secret;// = "nissum.credentials";
-
     @Autowired
     private CredentialsConfig credentialsConfig;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        log.info("Pasa por AuthorizationFilter = secret");
+        log.info("Pasa por AuthorizationFilter");
         String secret = credentialsConfig.getSecret();
-        log.info("secret: {}", secret);
         if (request.getServletPath().equals("/login")){
             filterChain.doFilter(request, response);
         }else{
@@ -53,7 +49,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             if(!ObjectUtils.isEmpty(authHeader) && authHeader.startsWith(bearer)){
                 try {
                     String token = authHeader.substring(bearer.length());
-                    Algorithm alg  = Algorithm.HMAC256(secret.getBytes()); // @todo pasar a env
+                    Algorithm alg  = Algorithm.HMAC256(secret.getBytes());
                     JWTVerifier verificator = JWT.require(alg).build();
                     DecodedJWT decoder = verificator.verify(token);
                     String username = decoder.getSubject();
